@@ -153,7 +153,7 @@ function drawScene0() {
   }
   // テキストのサイズを画面サイズに応じて設定
 
-  //imageDisplayScene0();
+  imageDisplayScene0();
   textSize(textSizeValue);
   fill(0);
   text("「初音ミク」から\n友達申請が来ています", width / 2, height / 2 - rectHeight / 4);
