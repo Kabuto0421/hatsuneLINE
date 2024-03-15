@@ -174,8 +174,8 @@ function drawScene1() {
     text('初音ミク', mikuTextX, mikuTextY);
 
     // 画像の描画位置を調整
-    let imageX = mikuTextX - 50; // 「初音ミク」テキストのさらに左
-    let imageY = mikuTextY - (mikuImage.height / 4) + (boxHeight / 4); // メッセージボックスの高さに合わせる
+    let imageX = mikuTextX - 120; // 「初音ミク」テキストのさらに左
+    let imageY = mikuTextY + (boxHeight / 4); // メッセージボックスの高さに合わせる
     imageDisplayScene1(imageX, imageY);
 
     // テキストサイズを元に戻す
@@ -188,7 +188,9 @@ function drawScene1() {
   }
   let rectWidth = width * 0.625; // 画面幅の62.5%
   let rectHeight = height * 0.25; // 画面高さの55.5%
-  rect(width / 2, height / 2 + height / 5, rectWidth, rectHeight)
+
+  rectMode(CENTER);
+  rect(width / 2, height / 2 + height / 4, rectWidth, rectHeight)
 }
 
 let img1, mikuImage;
