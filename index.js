@@ -144,9 +144,9 @@ function drawScene1() {
   let y = startY;
   let boxHeight = height * 0.08; // 画面高さの8%
   let padding = width * 0.01; // テキストのパディング
-  let margin = height * 0.02; // メッセージボックス間のマージン
+  let margin = height * 0.03; // メッセージボックス間のマージン
   let textSizeValue = width * 0.02;
-  var textSmallSizeValue = width * 0.05;
+  var textSmallSizeValue = width * 0.01;
   textSize(textSizeValue);
 
   for (let i = messages.length - 1; i >= 0; i--) {
@@ -169,8 +169,8 @@ function drawScene1() {
     // 「初音ミク」テキストの描画位置を調整
     fill(255); // テキストの色を白に
     textSize(textSmallSizeValue); // 「初音ミク」テキストのサイズ
-    let mikuTextX = rectX - 100; // メッセージボックスの左に配置
-    let mikuTextY = rectY + (boxHeight / 2) - (textSizeValue / 2); // メッセージボックスの上部に合わせる
+    let mikuTextX = rectX; // メッセージボックスの左に配置
+    let mikuTextY = rectY + (boxHeight / 2) - (textSizeValue + 20); // メッセージボックスの上部に合わせる
     text('初音ミク', mikuTextX, mikuTextY);
 
     // 画像の描画位置を調整
@@ -203,10 +203,10 @@ function imageDisplayScene0() {
 }
 
 function imageDisplayScene1(x, y) {
-  let imgX = x - mikuImage.width / 2;
-  let imgY = y - mikuImage.height / 2;
-  image(mikuImage, imgX, imgY, mikuImage.width / 2, mikuImage.height / 2);
+
+  image(mikuImage, imgX, imgY, mikuImage.width / 4, mikuImage.height / 4);
 }
+
 function mousePressed() {
   // ボタンの当たり判定
   if (scene === 0 && mouseX >= btnX - btnWidth / 2 && mouseX <= btnX + btnWidth / 2 &&
