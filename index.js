@@ -3,6 +3,8 @@
 let sceneStartTime = 0; // シーンが開始された時の時間を格納
 let buttonEnabled = false; // ボタンが有効かどうかを追跡
 let countdown = 5; // カウントダウン開始値
+let buttons;
+
 const { Player, Ease } = TextAliveApp;
 
 const player = new Player({
@@ -97,6 +99,11 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
   updateButtonSize(); // ボタンのサイズと位置を更新
+  buttons = [
+    { x: width / 4, y: height / 2 + height / 3 + 40, w: width / 5, h: 30, text: "選択肢 1" },
+    { x: width / 2, y: height / 2 + height / 3 + 40, w: width / 5, h: 30, text: "選択肢 2" },
+    { x: width - width / 4, y: height / 2 + height / 3 + 40, w: width / 5, h: 30, text: "選択肢 3" }
+  ];
   document.getElementById('content').style.display = 'none';
   document.getElementById('overlay').style.display = 'none';
 
@@ -146,7 +153,7 @@ function drawScene0() {
   }
   // テキストのサイズを画面サイズに応じて設定
 
-  imageDisplayScene0();
+  //imageDisplayScene0();
   textSize(textSizeValue);
   fill(0);
   text("「初音ミク」から\n友達申請が来ています", width / 2, height / 2 - rectHeight / 4);
@@ -209,10 +216,25 @@ function drawScene1() {
     if (y < 0) break;
   }
   let rectWidth = width * 0.8; // 画面幅の62.5%
-  let rectHeight = height * 0.15; // 画面高さの55.5%
+  let rectHeight = height * 0.2; // 画面高さの55.5%
 
   rectMode(CENTER);
-  rect(width / 2, height / 2 + height / 3, rectWidth, rectHeight)
+  rect(width / 2, height / 2 + height / 3, rectWidth, rectHeight);
+  fill(220);
+  rect(width / 2, height / 2 + height / (3.3), rectWidth / 2 + rectWidth / (2.5), rectHeight / (2.5), rectHeight / 5);
+  fill(128); // 灰色
+  let inputFormY = height / 2 + height / 3 - 25; // 入力フォームの位置
+  textAlign(CENTER, CENTER);
+  text("|メッセージを入力", width / 4, inputFormY);
+  // 3つの擬似的なボタンを描画
+  buttons.forEach(button => {
+    fill('#039393'); // ボタンの色
+    rect(button.x, button.y, button.w, button.h, 5); // 角丸の四角形ボタン
+    fill(255); // テキストの色
+    textSize(textSizeValue); // テキストのサイズ
+    textAlign(CENTER, CENTER);
+    text(button.text, button.x, button.y);
+  });
 }
 
 let img1, mikuImage;
@@ -240,6 +262,15 @@ function mousePressed() {
     scene = 1; // シーンを1に変更
     player.requestPlay();
   }
+  if (scene == 1) {
+    buttons.forEach((button, index) => {
+      if (mouseX >= button.x - button.w / 2 && mouseX <= button.x + button.w / 2 &&
+        mouseY >= button.y - button.h / 2 && mouseY <= button.y + button.h / 2) {
+        console.log(button.text + " がクリックされました");
+        // ボタンがクリックされたときの処理
+      }
+    });
+  }
 }
 
 
@@ -254,4 +285,20 @@ function updateButtonSize() {
   btnHeight = height * 0.166; // 画面高さの16.6%
   btnX = width / 2;
   btnY = height / 2 + height * 0.185; // 画面高さの18.5%下
+
+  // buttons配列のボタンのサイズと位置を更新
+  buttons[0].x = width / 4; // 画面幅の1/4
+  buttons[0].y = height / 2 + height / 3 + 40;
+  buttons[0].w = width / 5; // 画面幅の1/5
+  buttons[0].h = 30; // 高さは固定値
+
+  buttons[1].x = width / 2; // 画面幅の中央
+  buttons[1].y = height / 2 + height / 3 + 40;
+  buttons[1].w = width / 5; // 画面幅の1/5
+  buttons[1].h = 30; // 高さは固定値
+
+  buttons[2].x = width - width / 4; // 画面幅の3/4
+  buttons[2].y = height / 2 + height / 3 + 40;
+  buttons[2].w = width / 5; // 画面幅の1/5
+  buttons[2].h = 30; // 高さは固定値
 }
