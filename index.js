@@ -1,6 +1,8 @@
 
 
-
+let sceneStartTime = 0; // シーンが開始された時の時間を格納
+let buttonEnabled = false; // ボタンが有効かどうかを追跡
+let countdown = 5; // カウントダウン開始値
 const { Player, Ease } = TextAliveApp;
 
 const player = new Player({
@@ -113,6 +115,17 @@ function draw() {
 }
 
 function drawScene0() {
+  let textSizeValue = width * 0.033; // 画面幅の3.3%
+  if (sceneStartTime === 0) {
+    sceneStartTime = millis();
+  }
+
+  // 現在の時間とシーン開始時間の差分を計算
+  let elapsedTime = millis() - sceneStartTime;
+
+  // カウントダウンの計算（5秒から開始して1秒ごとに減らす）
+  let remainingTime = countdown - Math.floor(elapsedTime / 1000);
+
   // キャンバスに合わせて四角形のサイズを動的に決定
   let rectWidth = width * 0.625; // 画面幅の62.5%
   let rectHeight = height * 0.555; // 画面高さの55.5%
@@ -122,20 +135,29 @@ function drawScene0() {
   rectMode(CENTER);
   rect(width / 2, height / 2, rectWidth, rectHeight);
 
+  // カウントダウンが0より大きい場合は、カウントダウンを表示
+  if (remainingTime > 0) {
+    fill(0); // テキストの色
+    textSize(textSizeValue); // テキストサイズ
+    textAlign(CENTER, CENTER);
+    text(remainingTime, width / 2, height / 2 + rectHeight / 4); // カウントダウンを描画
+  } else {
+    buttonEnabled = true;
+  }
   // テキストのサイズを画面サイズに応じて設定
-  let textSizeValue = width * 0.033; // 画面幅の3.3%
+
   imageDisplayScene0();
   textSize(textSizeValue);
   fill(0);
   text("「初音ミク」から\n友達申請が来ています", width / 2, height / 2 - rectHeight / 4);
-
-  // 「友達になる」ボタンを描画
-  fill('#039393');
-  rect(btnX, btnY, btnWidth, btnHeight);
-  fill(255);
-  textSize(textSizeValue * 0.75); // テキストサイズをボタン用に調整
-  text("友達を追加する", btnX, btnY);
-
+  if (buttonEnabled) {
+    // 「友達になる」ボタンを描画
+    fill('#039393');
+    rect(btnX, btnY, btnWidth, btnHeight);
+    fill(255);
+    textSize(textSizeValue * 0.75); // テキストサイズをボタン用に調整
+    text("友達を追加する", btnX, btnY);
+  }
 }
 function drawScene1() {
   background('#039393');
@@ -186,11 +208,11 @@ function drawScene1() {
     // 画面上部に達したらループを抜ける
     if (y < 0) break;
   }
-  let rectWidth = width * 0.625; // 画面幅の62.5%
-  let rectHeight = height * 0.25; // 画面高さの55.5%
+  let rectWidth = width * 0.8; // 画面幅の62.5%
+  let rectHeight = height * 0.15; // 画面高さの55.5%
 
   rectMode(CENTER);
-  rect(width / 2, height / 2 + height / 4, rectWidth, rectHeight)
+  rect(width / 2, height / 2 + height / 3, rectWidth, rectHeight)
 }
 
 let img1, mikuImage;
@@ -209,17 +231,17 @@ function imageDisplayScene0() {
 
 function imageDisplayScene1(x, y) {
 
-  image(mikuImage, x, y, mikuImage.width / 4, mikuImage.height / 4);
+  image(mikuImage, x, y, mikuImage.width / 5, mikuImage.height / 5);
 }
 
 function mousePressed() {
-  // ボタンの当たり判定
-  if (scene === 0 && mouseX >= btnX - btnWidth / 2 && mouseX <= btnX + btnWidth / 2 &&
+  if (buttonEnabled && scene === 0 && mouseX >= btnX - btnWidth / 2 && mouseX <= btnX + btnWidth / 2 &&
     mouseY >= btnY - btnHeight / 2 && mouseY <= btnY + btnHeight / 2) {
     scene = 1; // シーンを1に変更
     player.requestPlay();
   }
 }
+
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
