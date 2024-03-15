@@ -1,12 +1,3 @@
-/**
- * TextAlive App API script tag example
- * https://github.com/TextAliveJp/textalive-app-script-tag
- *
- * 発声中の歌詞をフレーズ単位で表示します。
- * また、このアプリが TextAlive ホストと接続されていなければ再生コントロールを表示します。
- * 
- * `script` タグで TextAlive App API を読み込んでいること以外は https://github.com/TextAliveJp/textalive-app-phrase と同内容です。
- */
 
 function preload() {
   img = loadImage("hatsunemiku.jpg"); // 画像のパスを指定
@@ -86,11 +77,15 @@ function onThrottledTimeUpdate(position) {
 }
 
 let currentPhrase = ""; // 現在のフレーズを格納する変数
-
+let messages = []; // メッセージを格納する配列
 function animatePhrase(now, unit) {
-  // 現在のフレーズを更新
-  if (unit.contains(now)) {
+  // フレーズが更新されたタイミングでのみ動作
+  if (unit.contains(now) && currentPhrase !== unit.text) {
+    // 現在のフレーズを更新
     currentPhrase = unit.text;
+
+    // 新しいフレーズをmessages配列に追加
+    messages.push({ text: unit.text, time: now });
   }
 }
 
@@ -99,14 +94,13 @@ let btnX, btnY, btnWidth, btnHeight; // ボタンの位置とサイズ
 let img; // 画像を格納する変数
 
 
-
 function setup() {
 
   createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
   updateButtonSize(); // ボタンのサイズと位置を更新
-  document.getElementById('content').style.display = 'none';
-  document.getElementById('overlay').style.display = 'none';
+  //document.getElementById('content').style.display = 'none';
+  //document.getElementById('overlay').style.display = 'none';
 
 }
 
@@ -117,11 +111,7 @@ function draw() {
       drawScene0();
       break;
     case 1:
-      background('#039393');
-      let textSizeValue = width * 0.033; // 画面幅の3.3%
-      textSize(textSizeValue);
-      fill(255);
-      text(currentPhrase, width / 2, height / 2); // 現在のフレーズを表示
+      drawScene1();
       break;
   }
 }
@@ -138,6 +128,10 @@ function drawScene0() {
 
   // テキストのサイズを画面サイズに応じて設定
   let textSizeValue = width * 0.033; // 画面幅の3.3%
+  let imgX = width / 2 - img.width / 2;
+  let imgY = height / 2 - img.height / 2;
+
+  image(img, imgX, imgY);
   textSize(textSizeValue);
   fill(0);
   text("「初音ミク」から\n友達申請が来ています", width / 2, height / 2 - rectHeight / 4);
@@ -148,12 +142,41 @@ function drawScene0() {
   fill(255);
   textSize(textSizeValue * 0.75); // テキストサイズをボタン用に調整
   text("友達を追加する", btnX, btnY);
-  let imgX = width / 2 - img.width / 2;
-  let imgY = height / 2 - img.height / 2;
 
-  // 画像を描画
-  image(img, imgX, imgY);
 }
+function drawScene1() {
+  background('#039393');
+  let x = width / 2; // メッセージボックスの中心X座標
+  let startY = height * 0.6; // 画面の下部から開始
+  let y = startY;
+  let boxHeight = height * 0.08; // 画面高さの8%
+  let padding = width * 0.01; // テキストのパディング
+  let margin = height * 0.02; // メッセージボックス間のマージン
+  let textSizeValue = width * 0.02;
+  textSize(textSizeValue);
+
+  for (let i = messages.length - 1; i >= 0; i--) {
+    let msgWidth = textWidth(messages[i].text) + padding * 2;
+    msgWidth = max(msgWidth, width * 0.2); // 最小幅を保証
+    fill(255);
+
+    // 角丸の四角形を描画
+    rectMode(CORNER);
+    rect(x / 3, y, msgWidth, boxHeight, boxHeight / 5);
+    fill(0);
+
+    // テキストの描画位置と揃え方を設定
+    textAlign(LEFT, TOP);
+    // テキストを描画（メッセージボックスの左端からpadding分右にずらして描画）
+    text(messages[i].text, x / 3 + padding, y + padding);
+
+    // 次のメッセージボックスのY座標を更新
+    y -= boxHeight + margin;
+    // 画面上部に達したらループを抜ける
+    if (y < 0) break;
+  }
+}
+
 
 function mousePressed() {
   // ボタンの当たり判定
