@@ -11,6 +11,7 @@
 function preload() {
   img = loadImage("hatsunemiku.jpg"); // 画像のパスを指定
 }
+
 const { Player, Ease } = TextAliveApp;
 
 const player = new Player({
@@ -151,7 +152,7 @@ function drawScene0() {
   let imgY = height / 2 - img.height / 2;
 
   // 画像を描画
-  image(img, imgX, imgY, textSizeValue, textSizeValue);
+  image(img, imgX, imgY);
 }
 
 function mousePressed() {
