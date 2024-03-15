@@ -98,12 +98,13 @@ function setup() {
 
   createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
-  updateButtonSize(); // ボタンのサイズと位置を更新
+
   buttons = [
     { x: width / 4, y: height / 2 + height / 3 + 40, w: width / 5, h: 30, text: "選択肢 1" },
     { x: width / 2, y: height / 2 + height / 3 + 40, w: width / 5, h: 30, text: "選択肢 2" },
     { x: width - width / 4, y: height / 2 + height / 3 + 40, w: width / 5, h: 30, text: "選択肢 3" }
   ];
+  updateButtonSize(); // ボタンのサイズと位置を更新
   document.getElementById('content').style.display = 'none';
   document.getElementById('overlay').style.display = 'none';
 
