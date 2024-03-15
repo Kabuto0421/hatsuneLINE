@@ -1,7 +1,5 @@
 
-function preload() {
-  img = loadImage("hatsunemiku.jpg"); // 画像のパスを指定
-}
+
 
 const { Player, Ease } = TextAliveApp;
 
@@ -91,8 +89,6 @@ function animatePhrase(now, unit) {
 
 let scene = 0;
 let btnX, btnY, btnWidth, btnHeight; // ボタンの位置とサイズ
-let img; // 画像を格納する変数
-
 
 function setup() {
 
@@ -128,10 +124,7 @@ function drawScene0() {
 
   // テキストのサイズを画面サイズに応じて設定
   let textSizeValue = width * 0.033; // 画面幅の3.3%
-  let imgX = width / 2 - img.width / 2;
-  let imgY = height / 2 - img.height / 2;
-
-  image(img, imgX, imgY);
+  imageDisplayScene0();
   textSize(textSizeValue);
   fill(0);
   text("「初音ミク」から\n友達申請が来ています", width / 2, height / 2 - rectHeight / 4);
@@ -153,6 +146,7 @@ function drawScene1() {
   let padding = width * 0.01; // テキストのパディング
   let margin = height * 0.02; // メッセージボックス間のマージン
   let textSizeValue = width * 0.02;
+  var textSmallSizeValue = width * 0.05;
   textSize(textSizeValue);
 
   for (let i = messages.length - 1; i >= 0; i--) {
@@ -162,13 +156,30 @@ function drawScene1() {
 
     // 角丸の四角形を描画
     rectMode(CORNER);
-    rect(x / 3, y, msgWidth, boxHeight, boxHeight / 5);
-    fill(0);
+    let rectX = x / 3;
+    let rectY = y;
+    rect(rectX, rectY, msgWidth, boxHeight, boxHeight / 5);
 
+    fill(0);
     // テキストの描画位置と揃え方を設定
     textAlign(LEFT, TOP);
-    // テキストを描画（メッセージボックスの左端からpadding分右にずらして描画）
-    text(messages[i].text, x / 3 + padding, y + padding);
+    // テキストを描画
+    text(messages[i].text, rectX + padding, rectY + padding);
+
+    // 「初音ミク」テキストの描画位置を調整
+    fill(255); // テキストの色を白に
+    textSize(textSmallSizeValue); // 「初音ミク」テキストのサイズ
+    let mikuTextX = rectX - 100; // メッセージボックスの左に配置
+    let mikuTextY = rectY + (boxHeight / 2) - (textSizeValue / 2); // メッセージボックスの上部に合わせる
+    text('初音ミク', mikuTextX, mikuTextY);
+
+    // 画像の描画位置を調整
+    let imageX = mikuTextX - 50; // 「初音ミク」テキストのさらに左
+    let imageY = mikuTextY - (mikuImage.height / 4) + (boxHeight / 4); // メッセージボックスの高さに合わせる
+    imageDisplayScene1(imageX, imageY);
+
+    // テキストサイズを元に戻す
+    textSize(textSizeValue);
 
     // 次のメッセージボックスのY座標を更新
     y -= boxHeight + margin;
@@ -177,7 +188,25 @@ function drawScene1() {
   }
 }
 
+let img1, mikuImage;
 
+function preload() {
+  img1 = loadImage("hatsunemiku.jpg"); // 画像のパスを指定
+  mikuImage = loadImage("hatsuneKOSHIKI.jpg");
+}
+
+function imageDisplayScene0() {
+  let imgX = width / 2 - img1.width / 2;
+  let imgY = height / 2 - img1.height / 2;
+
+  image(img1, imgX, imgY);
+}
+
+function imageDisplayScene1(x, y) {
+  let imgX = x - mikuImage.width / 2;
+  let imgY = y - mikuImage.height / 2;
+  image(mikuImage, imgX, imgY, mikuImage.width / 2, mikuImage.height / 2);
+}
 function mousePressed() {
   // ボタンの当たり判定
   if (scene === 0 && mouseX >= btnX - btnWidth / 2 && mouseX <= btnX + btnWidth / 2 &&
