@@ -186,6 +186,9 @@ function drawScene1() {
     // 画面上部に達したらループを抜ける
     if (y < 0) break;
   }
+  let rectWidth = width * 0.625; // 画面幅の62.5%
+  let rectHeight = height * 0.25; // 画面高さの55.5%
+  rect(width / 2, height / 2 + height / 5, rectWidth, rectHeight)
 }
 
 let img1, mikuImage;
@@ -204,7 +207,7 @@ function imageDisplayScene0() {
 
 function imageDisplayScene1(x, y) {
 
-  image(mikuImage, imgX, imgY, mikuImage.width / 4, mikuImage.height / 4);
+  image(mikuImage, x, y, mikuImage.width / 4, mikuImage.height / 4);
 }
 
 function mousePressed() {
