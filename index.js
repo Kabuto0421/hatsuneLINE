@@ -99,8 +99,8 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   textAlign(CENTER, CENTER);
   updateButtonSize(); // ボタンのサイズと位置を更新
-  //document.getElementById('content').style.display = 'none';
-  //document.getElementById('overlay').style.display = 'none';
+  document.getElementById('content').style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
 
 }
 
