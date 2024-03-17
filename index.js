@@ -200,7 +200,7 @@ function drawScene0() {
 
   // テキストのサイズを画面サイズに応じて設定
 
-  //imageDisplayScene0();
+  imageDisplayScene0();
   if (remainingTime > 0) {
     fill(0); // テキストの色
     textSize(textSizeValue); // テキストサイズ
@@ -262,7 +262,7 @@ function drawScene1() {
     // 画像の描画位置を調整
     let imageX = mikuTextX - 120; // 「初音ミク」テキストのさらに左
     let imageY = mikuTextY + (boxHeight / 4); // メッセージボックスの高さに合わせる
-    // imageDisplayScene1(imageX, imageY);
+    imageDisplayScene1(imageX, imageY);
 
     // テキストサイズを元に戻す
     textSize(textSizeValue);
@@ -348,7 +348,7 @@ function drawScene1() {
         // 画像の描画位置を調整
         let imageX = mikuTextX - 120; // 「初音ミク」テキストのさらに左
         let imageY = mikuTextY + (boxHeight / 4); // メッセージボックスの高さに合わせる
-        // imageDisplayScene1(imageX, imageY);
+        imageDisplayScene1(imageX, imageY);
 
         // テキストサイズを元に戻す
         textSize(textSizeValue);
@@ -366,7 +366,7 @@ function drawScene1() {
 }
 
 let img1, mikuImage, kaigan, mentako, siturei, tin;
-/*
+
 function preload() {
   img1 = loadImage("hatsunemiku.jpg"); // 画像のパスを指定
   mikuImage = loadImage("hatsuneKOSHIKI.jpg");
@@ -386,14 +386,14 @@ function imageDisplayScene0() {
 function imageDisplayScene1(x, y) {
 
   image(mikuImage, x, y, mikuImage.width / 5, mikuImage.height / 5);
-}*/
-/*
-function imageDisplayAll(x, y){
+}
+
+function imageDisplayAll(x, y) {
   //image(kaigan, x, y, mikuImage.width / 5, mikuImage.height / 5);
-  image(siturei, x, y+100, mikuImage.width / 5, mikuImage.height / 5)
-  image(mentako, x, y+200, mikuImage.width / 5, mikuImage.height / 5)
-  image(tin, x, y+300, mikuImage.width / 5, mikuImage.height / 5)
-}*/
+  image(siturei, x, y + 100, mikuImage.width / 5, mikuImage.height / 5)
+  image(mentako, x, y + 200, mikuImage.width / 5, mikuImage.height / 5)
+  image(tin, x, y + 300, mikuImage.width / 5, mikuImage.height / 5)
+}
 
 function mousePressed() {
   if (buttonEnabled && scene === 0 && mouseX >= btnX - btnWidth / 2 && mouseX <= btnX + btnWidth / 2 &&
